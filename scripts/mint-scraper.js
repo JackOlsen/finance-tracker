@@ -32,7 +32,8 @@
                 accountBalance: $account.find('.balance')[0].innerHTML.replace('$', '').replace('-', '')
             });
         });
-
-        downloadObjectAsJson(accounts, `mint_scrape_${new Date().getTime()}`);
+		let now = new Date();
+		let localNow = `${now.getFullYear()}${now.getMonth() + 1}${now.getDate().toString().padLeft(2, '0')}${now.getHours().toString().padLeft(2, '0')}${now.getMinutes().toString().padLeft(2, '0')}${now.getSeconds().toString().padLeft(2, '0')}`
+        downloadObjectAsJson(accounts, `mint_scrape_${localNow}`);
     }, 15000);
 })();

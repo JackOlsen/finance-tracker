@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
@@ -13,6 +14,7 @@ namespace MintImporter
     public partial class Service1 : ServiceBase
     {
         private readonly FileSystemWatcher Watcher;
+        private readonly CultureInfo US_CULTURE_INFO = new CultureInfo("en-US");
 
         public Service1()
         {
@@ -52,8 +54,10 @@ namespace MintImporter
         private void ProcessFile(string filePath)
         {
             var fileInfo = new FileInfo(filePath);
-            var timeStampMs = Convert.ToInt64(new Regex(@"^mint_scrape_(\d*).json$").Match(fileInfo.Name).Groups[1].Value);
-            var date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(timeStampMs);
+            var date = DateTime.ParseExact(
+                s: new Regex(@"^mint_scrape_(.*).json$").Match(fileInfo.Name).Groups[1].Value,
+                format: "yyyyMMddHHmmss",
+                provider: US_CULTURE_INFO);
             var json = File.ReadAllText(filePath);
             var accountSnapshots = JsonConvert.DeserializeObject<AccountDetails[]>(json);
             var db = new MintImporterDbContext();
