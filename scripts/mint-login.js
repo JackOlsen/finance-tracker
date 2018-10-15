@@ -9,8 +9,10 @@
 // ==/UserScript==
 
 (function(jQuery) {
-    'use strict';
-    setTimeout(function() {
-        jQuery('#ius-sign-in-submit-btn').click();
-    }, 5000);
+    'use strict';	
+	function submit() {
+		jQuery('#ius-sign-in-submit-btn').click();
+		setTimeout(submit, 5000);
+	}
+    submit();
 })(jQuery);
