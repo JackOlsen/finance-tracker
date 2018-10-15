@@ -27,12 +27,12 @@
         jQuery('#module-accounts .accounts-data-li').each(function(index, account) {
             let $account = jQuery(account);
             accounts.push({
-                accountId: account.id,
+                accountId: account.id.substring(8),
                 accountName: $account.find('.accountName')[0].innerHTML,
-                accountBalance: $account.find('.balance')[0].innerHTML.substring(1)
+                accountBalance: $account.find('.balance')[0].innerHTML.replace('$', '').replace('-', '')
             });
         });
 
         downloadObjectAsJson(accounts, `mint_scrape_${new Date().getTime()}`);
-    }, 8000);
+    }, 15000);
 })();
